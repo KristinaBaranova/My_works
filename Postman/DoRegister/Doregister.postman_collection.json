@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "85604e81-3090-4c6b-ba7d-e24ac073359f",
+		"name": "Doregister",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21130740"
+	},
+	"item": [
+		{
+			"name": "doregister1",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var email = _.random(1000) + '@gmail.com'\r",
+							"pm.environment.set('email1', email)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"{{email1}}\",\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"password\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}doregister",
+					"host": [
+						"{{url}}doregister"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "doregister2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var email = _.random(1000) + '@gmail.com'\r",
+							"pm.environment.set('email2', email)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"{{email2}}\",\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"password\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}doregister",
+					"host": [
+						"{{url}}doregister"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "doregister3",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var email = _.random(1000) + '@gmail.com'\r",
+							"pm.environment.set('email3', email)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"{{email3}}\",\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"password\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}doregister",
+					"host": [
+						"{{url}}doregister"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createcompany",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"компания создана\"), function() {     \r",
+							"        pm.response.to.have.status(200); \r",
+							"};\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"company_name\": \"{{company_name}}\",\r\n    \"company_type\": \"ООО\",\r\n    \"company_users\": [\r\n        \"{{email1}}\",\r\n        \"{{email2}}\"\r\n    ],\r\n    \"email_owner\": \"{{email3}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}createcompany",
+					"host": [
+						"{{url}}createcompany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "magicsearch",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"query\": \"{{company_name}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}magicsearch",
+					"host": [
+						"{{url}}magicsearch"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
