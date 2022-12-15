@@ -1,3 +1,5 @@
+Создание таблиц
+
 create table SELLER (SNUM number(4) PRIMARY KEY,
 SNAME varchar2(10), CITY varchar2(10), COMM number(7,2));
 
@@ -8,6 +10,8 @@ create table ORDERS (ONUM number(4) PRIMARY KEY, AMT number(7,2),
 ODATE date, CNUM number(4), SNUM number(4),
 FOREIGN KEY(CNUM) REFERENCES CUSTOMER(CNUM),
 FOREIGN KEY(SNUM) REFERENCES SELLER(SNUM));
+
+Наполнение данными
 
 INSERT ALL
  INTO SELLER (SNUM, SNAME, CITY, COMM) VALUES (1001, 'Peel', 'London', 0.12)
@@ -43,12 +47,12 @@ SELECT* FROM dual;
 Запросы
 
 1.	Выведите всех покупателей с рейтингом выше 100, проживающих в городах, в названии
-которых вторая буква не равна o ””, а четвертая буква не равна e
+которых вторая буква не равна o ””, а четвертая буква не равна e.
 
 SELECT* FROM CUSTOMER
 WHERE RATING>100 AND CITY NOT LIKE '_o_e'
 
-2.	Запросите двумя способами все заказы на 3 и 4 января
+2.	Запросите двумя способами все заказы на 3 и 4 января.
 
 SELECT* FROM ORDERS
 WHERE ODATE='03-JAN-20' OR ODATE='04-JAN-20'
@@ -56,7 +60,7 @@ WHERE ODATE='03-JAN-20' OR ODATE='04-JAN-20'
 SELECT* FROM ORDERS
 WHERE ODATE IN ('03-JAN-20','04-JAN-20')
 
-3.	Выведите сумму самого раннего заказа за каждую дату
+3.	Выведите сумму самого раннего заказа за каждую дату.
 
 SELECT AMT, ONUM, ODATE
 FROM ORDERS
@@ -66,21 +70,21 @@ FROM ORDERS
 GROUP BY ODATE)
 
 4.	Напишите запрос, который сосчитал бы сумму всех заказов для покупателей, которых
-обслуживает продавец с именем Peel
+обслуживает продавец с именем Peel.
 
 SELECT SUM(AMT) FROM ORDERS
 WHERE SNUM IN
 (SELECT SNUM FROM SELLER WHERE SNAME='Peel')
 
 5.	Напишите запрос, который выводит все заказы, сумма которых больше средней по всем
-заказам, используя подзапрос
+заказам, используя подзапрос.
 
 SELECT * FROM ORDERS
 WHERE AMT >
 (SELECT AVG(AMT) FROM ORDERS)
 
 6.	Напишите запрос, который вывел бы для каждого заказа его номер, стоимость и имя
-заказчика. Данные вывести для заказчиков, размещенных не в Лондоне и не в Риме
+заказчика. Данные вывести для заказчиков, размещенных не в Лондоне и не в Риме.
 
 SELECT ORDERS.ONUM, ORDERS.CNUM, ORDERS.AMT, CUSTOMER.CNAME
 FROM ORDERS, CUSTOMER
@@ -96,7 +100,7 @@ WHERE NOT CUSTOMER.CITY='London' AND NOT CUSTOMER.CITY='Rome'
 
 7.	Вывести пары имен покупатель продавец, которые совершили сделки не 4 и не 6
 января, при этом сумма каждой сделки от 1000 до 5000. Отсортировать по возрастанию
-суммы. Без использования подзапросов
+суммы. Без использования подзапросов.
 
 SELECT CUSTOMER.CNAME, SELLER.SNAME
 FROM CUSTOMER, SELLER, ORDERS
