@@ -1,3 +1,5 @@
+Создание таблиц
+
 create table CUSTOMERS (ID number(4) PRIMARY KEY,
 NAME varchar2(30));
 
@@ -16,6 +18,8 @@ create table PRODUCT_CHECK (ID_CHECK number(4), ID_PRODUCT number(4),
 "NUMBER" number(10),
 FOREIGN KEY(ID_CHECK) REFERENCES CHECKS(ID),
 FOREIGN KEY(ID_PRODUCT) REFERENCES PRODUCTS(ID));
+
+Наполнение данными
 
 INSERT ALL
  INTO CUSTOMERS (ID,NAME) VALUES (1, 'Sidorov')
@@ -65,23 +69,30 @@ INSERT ALL
  INTO PRODUCT_CHECK (ID_CHECK,ID_PRODUCT,"NUMBER") VALUES (6, 1002, 1)
 SELECT* FROM dual;
 
-1. Имена сотрудников у которых предпоследняя буква О
+Запросы
+
+1. Имена сотрудников, у которых предпоследняя буква О.
+
 SELECT NAME
 FROM EMPLOEES
 WHERE NAME LIKE'%o_'
 
-2.Название товаров , которые состоят больше , чем из 3 букв , при этом хотя бы одна буква в слове = e
+2.Название товаров, которые состоят больше, чем из 3 букв, при этом хотя бы одна буква в слове = e.
+
 SELECT NAME 
 FROM PRODUCTS
 WHERE NAME LIKE'%_e__%'
 
-3.Все товары , которые продал сотрудник : Титов (Titov)
+3.Все товары, которые продал сотрудник : Титов (Titov).
+
 SELECT PRODUCTS.NAME, EMPLOEES.NAME
 FROM PRODUCTS
 INNER JOIN PRODUCT_CHECK ON PRODUCTS.ID=PRODUCT_CHECK.ID_PRODUCT
 INNER JOIN CHECKS ON PRODUCT_CHECK.ID_CHECK=CHECKS.ID
 INNER JOIN EMPLOEES ON CHECKS.ID_EMPLOEE=EMPLOEES.ID
 WHERE EMPLOEES.NAME='Titov'
+ 
+или
 
 SELECT PRODUCTS.NAME
 FROM PRODUCTS, PRODUCT_CHECK, CHECKS
@@ -90,7 +101,8 @@ AND PRODUCT_CHECK.ID_CHECK=CHECKS.ID
 AND CHECKS.ID_EMPLOEE=
 (SELECT ID FROM EMPLOEES WHERE NAME='Titov')
 
-4.Вывести имя покупателя , который потратил меньше всего денег
+4.Вывести имя покупателя, который потратил меньше всего денег.
+
 SELECT CUSTOMERS.NAME, CHECKS.AMOUNT
 FROM CUSTOMERS, CHECKS
 WHERE CUSTOMERS.ID=CHECKS.ID_CUSTOMER
@@ -101,7 +113,8 @@ SELECT SUM(AMOUNT)
 FROM CHECKS
 GROUP BY ID_CUSTOMER))
 
-4.1
+или
+
 SELECT CUSTOMERS.NAME, CHECKS.AMOUNT
 FROM CUSTOMERS
 INNER JOIN CHECKS ON CUSTOMERS.ID=CHECKS.ID_CUSTOMER
@@ -112,29 +125,28 @@ SELECT SUM(AMOUNT)
 FROM CHECKS
 GROUP BY ID_CUSTOMER))
 
+5.Все номера чеков, в которых продавался сахар.
 
-
-5.Все номера чеков , в которых продавался сахар
 SELECT CHECKS.ID, PRODUCTS.NAME
 FROM PRODUCTS
 INNER JOIN PRODUCT_CHECK ON PRODUCTS.ID=PRODUCT_CHECK.ID_PRODUCT
 INNER JOIN CHECKS ON PRODUCT_CHECK.ID_CHECK=CHECKS.ID
 WHERE PRODUCTS.NAME='Sugar'
 
+6. Вывести название товара и кол во товара, которого продали больше всего.
 
-6. Вывести название товара и кол во товара , которого продали больше всего
-
-SELECT MAX("NUMBER")
-FROM PRODUCT_CHECK
-WHERE "NUMBER" IN
-(SELECT SUM("NUMBER")
+SELECT NAME, AMT
+FROM 
+(
+SELECT SUM("NUMBER") AS AMT, ID_PRODUCT
 FROM PRODUCT_CHECK
 GROUP BY ID_PRODUCT
-)
+ORDER BY AMT DESC
+OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY
+)T1
+JOIN PRODUCTS ON PRODUCTS.ID=T1.ID_PRODUCT
 
-
-
-7.
+7. Первый номер чека, в котором содержался сахар.
 
 SELECT MIN(ID_CHECK)
     FROM PRODUCT_CHECK
@@ -145,7 +157,7 @@ SELECT MIN(ID_CHECK)
         )
 
 
-8. Найти NAME сотрудников и имя товара , сотрудники которые продали самое большое количество хлеба
+8. Найти NAME сотрудников и имя товара, сотрудники которые продали самое большое количество хлеба
 Имя продавца который продал больше всего черного хлеба и имя продавца который продал больше всего белого хлеба.
 
 SELECT p.NAME, e.NAME, SUM( pc.NUMBER
@@ -166,7 +178,7 @@ pc.NUMBER
 desc
 FETCH FIRST 2 ROWS ONLY
 
-9. Сотрудник , который продал товаров на большую сумму
+9. Сотрудник, который продал товаров на большую сумму.
 
 SELECT NAME
 FROM EMPLOEES
@@ -177,11 +189,15 @@ ORDER BY SUMM DESC
 OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY
 )
 
-10. Вывести номер чека и сумма чека , но сумма чека должна рассчитываться самостоятельно , т.е . не брать
-сумму из чека
+10.	Вывести номер чека и сумма чека, но сумма чека должна рассчитываться самостоятельно, т.е. не брать сумму из чека.
 
+SELECT SUM(PRODUCTS.PRICE*PRODUCT_CHECK."NUMBER") AS AMT, ID_CHECK
+FROM PRODUCTS
+INNER JOIN PRODUCT_CHECK ON PRODUCTS.ID=PRODUCT_CHECK.ID_PRODUCT
+GROUP BY ID_CHECK
+ORDER BY ID_CHECK
 
-11.
+11.	Выбрать сотрудников с квалификацией = junior, у которых сумма всех продаж больше, чем продажи у Teamlead.
 
 SELECT NAME, AMT FROM 
 (
@@ -212,7 +228,7 @@ SELECT NAME, AMT FROM
 WHERE AMT > TEAMLEAD_MONEY 
  
 
-12. Вывести все товары , которые купил Sidorov
+12. Вывести все товары, которые купил Sidorov.
 
 SELECT PRODUCTS.NAME, CUSTOMERS.NAME
 FROM PRODUCTS
