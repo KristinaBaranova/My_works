@@ -1,0 +1,12 @@
+Education:      higher, secondarySpecial, secondary, secondaryUnfinished, another1, another1000
+Seniority:      less1, [1-5], [5-10]
+Lastjobtime:    notoffical, less1, [1-3], over3
+2NDFL:          yes, no
+JobInBank'sReg: yes, no
+NetIncome:      0, less20, [20-40], [40-100], over100
+Registration:   yes, no
+Criminal:       yesNotExtinguish, yesExtinguish, no
+Auto:           yes, no
+Realty:         yes, no
+
+IF [Seniority] = "less1" THEN [Lastjobtime] = "notoffical" OR [Lastjobtime] = "less1";
